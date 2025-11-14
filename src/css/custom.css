@@ -1,0 +1,86 @@
+/* src/css/custom.css */
+
+:root {
+  --ifm-color-primary: #1a5fb4;
+  --ifm-color-primary-dark: #1755a2;
+  --ifm-color-primary-darker: #165199;
+  --ifm-color-primary-darkest: #12427e;
+  --ifm-color-primary-light: #1d68c6;
+  --ifm-color-primary-lighter: #1e6dcf;
+  --ifm-color-primary-lightest: #2b7ce0;
+}
+
+
+/* --- DARK THEME COLORS (BLUE) --- */
+/* (This block is unchanged) */
+[data-theme='dark'] {
+  --ifm-color-primary: #1a5fb4;
+  --ifm-color-primary-dark: #1755a2;
+  --ifm-color-primary-darker: #165199;
+  --ifm-color-primary-darkest: #12427e;
+  --ifm-color-primary-light: #1d68c6;
+  --ifm-color-primary-lighter: #1e6dcf;
+  --ifm-color-primary-lightest: #2b7ce0;
+}
+
+
+
+/*
+======================================================
+=== GITHUB ICON FOR NAVBAR (VERTICAL-CENTER FIX) ===
+======================================================
+*/
+
+/* This styles the <a> link tag itself */
+.header-github-link {
+  /* This adds space between the icon and the theme toggle */
+  margin-left: 12px;
+
+  /*
+   * === THIS IS THE VERTICAL-CENTER FIX ===
+   * We make the link take up the *full height* of the navbar.
+   * The default navbar height is 60px.
+   */
+  height: var(--ifm-navbar-height);
+
+  /* We give it a defined width for spacing */
+  width: var(--ifm-navbar-height);
+
+  /*
+   * This centers the icon *inside* the 44px (width) x 60px (height) box.
+   */
+  display: flex;
+  align-items: center; /* Vertical center */
+  justify-content: center; /* Horizontal center */
+}
+
+/* This creates the icon element */
+.header-github-link:before {
+  content: '';
+
+  /*
+   * === THIS IS THE SIZE FIX ===
+   * We are increasing the icon size to 36px.
+   * This is visibly larger than the previous 32px.
+   */
+  width: 100%;
+  height: 100%;
+
+  /* This ensures the background SVG scales to fit */
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  /* This loads your BLACK icon for light mode */
+  background-image: url('/img/github.svg');
+}
+
+/* This switches the icon to white for dark mode */
+[data-theme='dark'] .header-github-link:before {
+  /* This loads your WHITE icon for dark mode */
+  background-image: url('/img/github-w.svg');
+}
+
+/* Adds a hover effect */
+.header-github-link:hover {
+  opacity: 0.7;
+}

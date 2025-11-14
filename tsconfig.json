@@ -1,0 +1,31 @@
+{
+  // This imports all the default Docusaurus types
+  "extends": "@docusaurus/tsconfig",
+
+  // All compiler settings MUST go inside this object
+  "compilerOptions": {
+    // --- Fix for '@theme/Heading' error ---
+    "baseUrl": ".",
+    "types": [
+      "@docusaurus/module-type-aliases",
+      "@docusaurus/theme-classic"
+    ],
+
+    // --- Fix for the deprecation warning ---
+    // I also fixed a small typo here ("ignoreDepregations" -> "ignoreDeprecations")
+    "ignoreDeprecations": "5.0",
+
+    // --- All your other settings, now in the right place ---
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "moduleResolution": "node"
+  },
+
+  // This is correct, it stays at the root
+  "exclude": [".docusaurus", "build"]
+}
