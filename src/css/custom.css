@@ -8,6 +8,13 @@
   --ifm-color-primary-light: #1d68c6;
   --ifm-color-primary-lighter: #1e6dcf;
   --ifm-color-primary-lightest: #2b7ce0;
+
+  /*
+   * === THE FIX: ONE VARIABLE ===
+   * We set *one* variable for the height of your logo and icon.
+   * 36px is a clean size that aligns well with text.
+   */
+  --cc-icon-height: 36px;
 }
 
 
@@ -27,56 +34,83 @@
 
 /*
 ======================================================
-=== GITHUB ICON FOR NAVBAR (VERTICAL-CENTER FIX) ===
+=== 1. Fix Logo & Title Vertical Centering ===
 ======================================================
 */
 
-/* This styles the <a> link tag itself */
-.header-github-link {
-  /* This adds space between the icon and the theme toggle */
-  margin-left: 12px;
-
-  /*
-   * === THIS IS THE VERTICAL-CENTER FIX ===
-   * We make the link take up the *full height* of the navbar.
-   * The default navbar height is 60px.
-   */
-  height: var(--ifm-navbar-height);
-
-  /* We give it a defined width for spacing */
-  width: var(--ifm-navbar-height);
-
-  /*
-   * This centers the icon *inside* the 44px (width) x 60px (height) box.
-   */
+/*
+ * Make the "brand" (logo + title) a flex container.
+ * This will vertically center the logo and the title text next to it.
+ */
+.navbar__brand {
   display: flex;
-  align-items: center; /* Vertical center */
-  justify-content: center; /* Horizontal center */
+  align-items: center;
 }
 
-/* This creates the icon element */
-.header-github-link:before {
-  content: '';
+/* Set your logo image to the new consistent height */
+.navbar__logo img {
+  height: var(--cc-icon-height); /* 36px */
+  width: auto; /* Maintain aspect ratio */
+}
+
+/*
+======================================================
+=== 2. Fix Text Link Vertical Centering ===
+======================================================
+*/
+
+/*
+ * Target the <a> tags for your "Docs", "Host Setup", etc.
+ * Make them fill the navbar height and center the text inside.
+ * This selector avoids dropdown menus.
+ */
+.navbar__item > a:not(.dropdown__toggle) {
+  display: flex;
+  align-items: center;
+  height: var(--ifm-navbar-height); /* Full 60px height */
+}
+
+/*
+======================================================
+=== 3. Fix GitHub Icon Size & Centering ===
+======================================================
+*/
+
+/*
+ * This styles the <a> link tag for the icon.
+ * We make it a flex container to center the icon.
+ */
+.header-github-link {
+  display: flex;
+  align-items: center;     /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  height: var(--ifm-navbar-height); /* Full 60px height */
 
   /*
-   * === THIS IS THE SIZE FIX ===
-   * We are increasing the icon size to 36px.
-   * This is visibly larger than the previous 32px.
+   * We give the *link* a width equal to the navbar height
+   * for a nice, square click target, just like your original CSS.
    */
-  width: 100%;
-  height: 100%;
+  width: var(--ifm-navbar-height);
+  margin-left: 0; /* Reset Docusaurus default margin */
+}
 
-  /* This ensures the background SVG scales to fit */
+/* This creates the icon pseudo-element *inside* the link */
+.header-github-link:before {
+  content: '';
+  /*
+   * Here, we set the icon's *actual size* to 36px,
+   * matching your logo.
+   */
+  width: var(--cc-icon-height);  /* 36px */
+  height: var(--cc-icon-height); /* 36px */
+
   background-size: contain;
   background-repeat: no-repeat;
-
-  /* This loads your BLACK icon for light mode */
   background-image: url('/img/github.svg');
 }
 
 /* This switches the icon to white for dark mode */
 [data-theme='dark'] .header-github-link:before {
-  /* This loads your WHITE icon for dark mode */
   background-image: url('/img/github-w.svg');
 }
 

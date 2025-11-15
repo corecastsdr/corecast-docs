@@ -1,4 +1,8 @@
 {
   "label": "Host Setup",
-  "position": 2
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn how to set up the Core Cast host software on your remote SDR."
+  }
 }

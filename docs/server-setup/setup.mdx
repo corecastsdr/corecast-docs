@@ -1,0 +1,127 @@
+
+# Hosting Your Own Core Cast Server
+
+This guide provides the complete steps to deploy a secure, production-ready Core Cast server using Docker and Docker Compose.
+
+## How It Works: Secure, Dynamic Setup
+
+The Core Cast server uses a secure, dynamic method to handle the SDR host's SSH connection. This process is designed to be secure by default and **avoids hardcoding any passwords**.
+
+Here is the flow:
+
+1.  **You (Admin)** run the `./setup.sh` script *once* on your server.
+2.  **`setup.sh`** generates two things:
+      * `./ssh_keys/`: The unique SSH host keys for your server.
+      * `./.env`: A **new file** that contains a secure, randomly generated password (e.g., `CORECAST_HOST_PASSWORD=...`).
+3.  **Docker Compose** reads the `./.env` file when you run `docker-compose up`.
+4.  **`entrypoint.sh`** (inside the container) receives the password as an environment variable. It then creates the special `sdr_host` user and sets its password dynamically *at runtime*.
+5.  **`sshd_config`** (the server's SSH config) is set up to **only allow this user** and to **force-run** a connection script, making it a highly secure, single-purpose login.
+
+:::info[Why this is secure]
+The Docker *image* itself contains no secrets. The password lives only in the `.env` file on your host machine and is injected at runtime, which is a security best practice.
+:::
+
+-----
+
+## 1\. Prerequisites
+
+Before you begin, you must have the following tools installed on your server:
+
+  * **Git**
+  * **Docker**
+  * **Docker Compose**
+
+-----
+
+## 2\. Installation
+
+### Step 1: Clone the Repository
+
+First, clone the Core Cast repository onto your server and navigate into the `server` directory.
+
+```bash
+# Clone the main repository
+git clone https://github.com/corecastsdr/corecast-server.git
+
+# Navigate into the server directory
+cd corecast-server/server
+```
+
+### Step 2: Run the One-Time Setup Script
+
+Next, you need to run the setup script. This will create the `.env` file and generate your server's unique SSH keys.
+
+```bash
+# Make the setup script executable
+sudo chmod +x setup.sh
+
+# Run the script
+./setup.sh
+```
+
+:::warning[IMPORTANT: Save Your Password\!]
+The setup script will output the randomly generated password for the `corecast-host` user. **You must provide this password to the operator of the remote SDR hardware.**
+
+🔑 This password is also saved in the `.env` file if you need to find it later.
+:::
+
+### Step 3: Create the Docker Network
+
+The Core Cast server and its related services (like the API) communicate over a dedicated Docker network. You must create this network manually.
+
+```bash
+# Create the external network
+sudo docker network create corecast_net
+```
+
+This is required because the `docker-compose.yml` file specifies the network as `external: true`.
+
+### Step 4: Build and Run the Container
+
+You're now ready to build and start the server. We use the `--build` flag to build the image locally and `-d` to run it in detached (background) mode.
+
+```bash
+sudo docker-compose up --build -d
+```
+
+## ✅ Your server is now running\!!!
+
+-----
+
+## 3\. Managing Your Server
+
+### Stopping and Removing the Server
+
+The simplest way to stop and remove all the containers, networks, and volumes defined in the compose file is with a single command:
+
+```bash
+# The standard way to stop and remove
+sudo docker-compose down
+```
+
+If you need to forcefully remove *only* the `corecast-server` container (for example, if it's stuck), you can use one of these more aggressive commands.
+
+```bash
+# Force-remove by name (if you used the default docker-compose.yml)
+sudo docker rm -f corecast-server 2>/dev/null || true
+
+# OR
+# Find the container by name, get its ID, and force-remove it
+sudo docker ps -a --filter name=corecast-server --format '{{.ID}}' | xargs -r sudo docker rm -f
+```
+
+### Starting the Server
+
+To start the server again after it's been stopped:
+
+```bash
+sudo docker-compose up -d
+```
+
+### Rebuilding the Image
+
+If you've made changes to the `Dockerfile` or related files, you can rebuild the image and restart the server with one command:
+
+```bash
+sudo docker-compose up -d --build
+```

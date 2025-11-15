@@ -91,14 +91,14 @@ const config = {
           // New link: "Server Setup"
           {
             type: 'doc',
-            docId: 'server-setup/installation', // <--- UPDATE THIS PATH
+            docId: 'server-setup/setup', // <--- UPDATE THIS PATH
             position: 'left',
             label: 'Server Setup',
           },
 
           // New link: GitHub Icon on the right
           {
-  href: 'https://github.com/corecastsdr/corecast-server',
+  href: 'https://github.com/corecastsdr',
   position: 'right',
   className: 'header-github-link', // <-- This is the important part
   'aria-label': 'GitHub repository',

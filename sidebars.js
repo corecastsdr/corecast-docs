@@ -26,7 +26,7 @@ const sidebars = {
       label: 'Server Setup',
       link: {
         type: 'doc',
-        id: 'server-setup/installation',
+        id: 'server-setup/setup', // Links to the main page for this category
       },
       items: [
         // 'server-setup/configuration',
