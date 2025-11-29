@@ -7,8 +7,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures'; // This imports File 1
 import Heading from '@theme/Heading';
+import { init } from '@plausible-analytics/tracker'
 
 import styles from './index.module.css';
+
+init({
+  domain: 'docs.corecastsdr.com',
+})
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
