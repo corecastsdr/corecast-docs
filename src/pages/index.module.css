@@ -1,23 +1,106 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+/* src/pages/index.module.css */
+
+.heroContainer {
+  padding: 4rem 2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .heroBanner {
-  padding: 4rem 0;
+  /* This is the 🧊 glassmorphism effect 🧊 */
+  background: rgba(20, 31, 71, 0.25);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* Overrides Docusaurus defaults */
+  --ifm-hero-background-color: transparent;
+  --ifm-hero-padding-bottom: 4rem;
+  --ifm-hero-padding-top: 4rem;
+
+  /* Custom text colors to look good on the glass */
+  color: #ffffff;
   text-align: center;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 1140px;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroTitle {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 3.5rem;
+}
+
+.heroSubtitle {
+  color: #e0e0e0;
+  font-size: 1.25rem;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+}
+
+/* Style for the button */
+.heroButton,
+.heroButton:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.heroButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+
+
+
+/* This is the new class we added in index.tsx */
+.homepageWrapper {
+  /* Apply the animation always */
+  animation: liquidGradient 15s ease infinite;
+  background-size: 400% 400%;
+  background-attachment: fixed;
+}
+
+/*
+ * BUT, only apply the *actual background* in dark mode.
+ * In light mode, this will be ignored, and the default
+ * Docusaurus light-mode background will be used.
+ */
+[data-theme='dark'] .homepageWrapper {
+  background: linear-gradient(
+    315deg,
+    rgba(8, 14, 44, 1) 3%,
+    rgba(34, 43, 88, 1) 38%,
+    rgba(19, 30, 81, 1) 68%,
+    rgba(8, 14, 44, 1) 98%
+  );
+}
+
+/* The animation keyframes */
+@keyframes liquidGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
